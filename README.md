@@ -1,5 +1,6 @@
 # free-ssl
-This script will help you to generate a trusted SSL certificate issued by [Let's Encrypt](letsencrypt.org) using [certbot](https://github.com/certbot/certbot) for you Shift node.<br>
+
+This script will help you to generate a trusted SSL certificate issued by [Let's Encrypt](letsencrypt.org) using [certbot](https://github.com/certbot/certbot).<br>
 
 ## Prerequisites
 In order to complete this script, you will need:
@@ -28,6 +29,7 @@ Example: `* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSL
 This cronjob checks and renews your SSL certificate every Wednesday at 12pm.<br>
 **Note:** `renewssl.sh` will only renew your certificate, if the expiration date is less than 30 days.<br><br>
 You can find the log at: **~/free-ssl/logs/renewssl.log**<br>
+
 
 ## Links
 Documentation: https://certbot.eff.org/docs <br>
