@@ -60,7 +60,7 @@ export LC_CTYPE="en_US.UTF-8" >> $LOG
 
 echo
 echo -n "Generating new SSL certificate.. this could take some minutes.." | tee -a $LOG
-certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
+sudo certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
 echo "Done." | tee -a $LOG
 sudo chmod 755 /etc/letsencrypt/archive/
 sudo chmod 755 /etc/letsencrypt/live/
