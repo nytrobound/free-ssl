@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script will help you to generate a trusted SSL certificate issued by Let's Encrypt using certbot.
+# This script will help you to generate a trusted SSL certificate issued by Let's Encrypt using certbot for Shift.
 
 SSLUSER=$USER
 LOCAL_HOME=$(pwd)
@@ -86,8 +86,8 @@ echo "NETWORK_INTERFACE=\"$NETWORK_INTERFACE\"" >> $CONF
 
 echo
 echo "Please do the following in another terminal on the server: "
-echo -e "Run: ${CYAN}sudo nano /etc/ufw/before.rules${OFF}"
-echo "Go to the bottom of the file and check your last 4 lines, that should look like this:"
+echo -e "Run: ${CYAN}sudo nano /etc/ufw/before.rules${OFF} "
+echo "Go to the bottom of the file and check your last 4 lines, that should look like this: "
 echo
 echo "    *nat"
 echo "    :PREROUTING ACCEPT [0:0]"
