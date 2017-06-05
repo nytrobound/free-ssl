@@ -50,7 +50,7 @@ sudo cp before.rules /etc/ufw/before.rules >> $LOG
 echo "Done." >> $LOG
 echo "Running certbot-auto renew.." >> $LOG
 sudo ufw allow 443/tcp &> /dev/null
-sudo certbot renew --dry-run --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting." | tee -a $LOG && exit 1; }
+sudo certbot renew --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting." | tee -a $LOG && exit 1; }
 sudo ufw delete allow 443/tcp &> /dev/null
 sudo ufw reload >> $LOG
 echo "Done." >> $LOG
@@ -78,4 +78,4 @@ echo "*********************************"
 echo "* Certificate renewal completed *" >> $LOG
 echo "*********************************"
 echo "$TIME" >> $LOG
-
+fi
