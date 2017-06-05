@@ -8,18 +8,18 @@ LOG=$(pwd)/logs/installssl.log
 CYAN='\033[1;36m'
 OFF='\033[0m'
 mkdir -p logs
-echo "++++++++++++++++++++" >> $LOG
 echo "Installation start.." >> $LOG
+echo "####################"
 echo
 
 if [ -f "config.sh" ]; then
-	echo "A previous installation was detected." | tee -a $LOG
-	echo "This script is meant to be executed only once." | tee -a $LOG
+	echo "A previous installation was detected. " | tee -a $LOG
+	echo "This script is meant to be executed only once. " | tee -a $LOG
 	echo "Exiting..." | tee -a $LOG
 	exit 0
 fi
 
-echo "This script will help you to generate a trusted SSL certificate issued by Let's Encrypt using certbot."
+echo "This script will help you to generate a trusted SSL certificate issued by Let's Encrypt using certbot. "
 echo
 echo -n "Enter your domain name: "
 	read DOMAIN_NAME
@@ -28,9 +28,9 @@ echo -n "Enter your email: "
 echo -n "Enter the port you will use for HTTPS: "
         read HTTPS_PORT
 echo
-echo -e "Before proceeding, please check your ufw configuration. To do this, execute ${CYAN}sudo ufw status${OFF} in a new terminal on your server."
-echo "You'll need to have your own ports enable, especially your SSH port and your SHIFT client port."
-echo -e "Execute ${CYAN}ifconfig${OFF} in the other terminal and look for the network interface of your server (normally is eth0, eth1, eth2, ens1, ens2, ens3...)."
+echo -e "Before proceeding, please check your ufw configuration. To do this, execute ${CYAN}sudo ufw status${OFF} in a new terminal on your server. "
+echo "You'll need to have your own ports enable, especially your SSH port and your SHIFT client port. "
+echo -e "Execute ${CYAN}ifconfig${OFF} in the other terminal and look for the network interface of your server (normally is eth0, eth1, eth2, ens1, ens2, ens3...) "
 echo -n "What is your network interface?: "
         read NETWORK_INTERFACE
 echo
@@ -44,7 +44,7 @@ echo -n "Enabling port 443/tcp.. " | tee -a $LOG
 sudo ufw allow 443/tcp &>> $LOG || { echo "Could not enable port 443. Please read your logs/installssl.log file. Exiting."  | tee -a $LOG && exit 1; }
 echo "Done."
 echo
-echo -n "Backing up firewall.." | tee -a $LOG
+echo -n "Backing up firewall.. " | tee -a $LOG
 sudo cp /etc/ufw/before.rules before.rules.backup
 echo "Done." | tee -a $LOG
 
@@ -56,12 +56,12 @@ sudo add-apt-repository -y ppa:certbot/certbot
 sudo apt-get update
 sudo apt-get install -y certbot
 } &> /dev/null
-echo "Done." | tee -a $LOG
+echo "Done. " | tee -a $LOG
 export LC_ALL="en_US.UTF-8" >> $LOG
 export LC_CTYPE="en_US.UTF-8" >> $LOG
 
 echo
-echo -n "Generating new SSL certificate.. this could take some minutes.." | tee -a $LOG
+echo -n "Generating new SSL certificate.. This could take some minutes.. " | tee -a $LOG
 sudo certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
 echo "Done." | tee -a $LOG
 sudo chmod 755 /etc/letsencrypt/archive/
@@ -93,9 +93,9 @@ echo "    :PREROUTING ACCEPT [0:0]"
 echo "    -A PREROUTING -i $NETWORK_INTERFACE -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PORT"
 echo "    COMMIT"
 echo
-echo "* If everything is correct, confirm with y and the script will reload your firewall."
-echo "* If there is something else or wrong, confirm with n and the script will restore a backup."
-echo "* Be aware that if the /etc/ufw/before.rules file contains other type of lines at the end of the file, your firewall might not work properly."
+echo "* If everything is correct, confirm with y and the script will reload your firewall. "
+echo "* If there is something else or wrong, confirm with n and the script will restore a backup. "
+echo "* Be aware that if the /etc/ufw/before.rules file contains other type of lines at the end of the file, your firewall might not work properly. "
 
 	read -p "Do you want to continue (y/n)?: " -n 1 -r
 	if [[  $REPLY =~ ^[Yy]$ ]]
@@ -108,17 +108,17 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other type of l
 		echo "source config.sh" >> start_renew.sh
 		echo "bash renewssl.sh \$1" >> start_renew.sh
 
-		echo "Deleting allow 443/tcp rule.." >> $LOG
+		echo "Deleting allow 443/tcp rule.. " >> $LOG
 		sudo ufw delete allow 443/tcp &>> $LOG || { echo "Could not remove allow 443/tcp rule. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
-		echo "Allowing your https port $HTTPS_PORT/tcp.." >> $LOG
+		echo "Allowing your https port $HTTPS_PORT/tcp.. " >> $LOG
 		sudo ufw allow $HTTPS_PORT/tcp &>> $LOG || { echo "Could not allow $HTTPS_PORT/tcp rule. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
-		echo "ufw reload.." >> $LOG
+		echo "ufw reload.. " >> $LOG
 		sudo ufw reload &>> $LOG || { echo "Could not reload ufw. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
 	else
-		echo -n "Restoring ufw/before.rules.." | tee -a $LOG
+		echo -n "Restoring ufw/before.rules.. " | tee -a $LOG
 		sudo rm /etc/ufw/before.rules >> $LOG
 		sudo cp before.rules.backup /etc/ufw/before.rules >> $LOG
-		echo "done" | tee -a $LOG
+		echo "Done. " | tee -a $LOG
 		echo
 		echo "You have decided not to continue. Please add the lines described above for /etc/ufw/before.rules and reload your firewall manually." | tee -a $LOG
 		exit 0
@@ -143,7 +143,6 @@ echo -e "            \"cert\": \"${CYAN}/etc/letsencrypt/live/$DOMAIN_NAME/fullc
 echo "            \"cert\": \"/etc/letsencrypt/live/$DOMAIN_NAME/fullchain.pem\"" >> $LOG
 echo "        }" | tee -a $LOG
 echo "    }," | tee -a $LOG
-
 echo
 echo "Please save your config.json file and reload Shift with ./shift_manager.bash reload" 
 echo
@@ -154,8 +153,8 @@ echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result." | tee -a $LOG
 echo " "  | tee -a $LOG
 echo
-echo "It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
-echo " --> To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end:" | tee -a $LOG
+echo "--> It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
+echo "To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end: " | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo " " | tee -a $LOG
 

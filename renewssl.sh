@@ -13,7 +13,7 @@ cert="/etc/letsencrypt/live/$DOMAIN/cert.pem"
 echo "Checking expiring date on cert $cert.." >> $LOG
 if openssl x509 -checkend 86400 -noout -in $cert
 then
-  echo "The certificate is good." >> $LOG
+  echo "The certificate is good. " >> $LOG
   today=`date +%D`
   expiredate=`openssl x509 -enddate -noout -in $cert  | awk -F'=' '{print $2}'`
   expdate="date +%D --date='$expiredate'"
@@ -24,23 +24,23 @@ then
   echo "Days left : $daysleft" >> $LOG
   echo " " >> $LOG
   if [ "$daysleft" -lt "30" ]; then
-        echo "Less than 30 days: Executing renewal script.." >> $LOG
+        echo "Less than 30 days: Executing renewal script.. " >> $LOG
         RENEW="1"
   else
-        echo "Greater than 30 days, no need for renewal." >> $LOG
+        echo "Greater than 30 days, no need for renewal. " >> $LOG
   fi
 else
-  echo "This certificate does not exist or could not be successfully renewed. You can do the following:" >> $LOG
-  echo " * Check if your domain is still alive." >> $LOG
-  echo " * Check if the folder /etc/letsencrypt/live/$DOMAIN/ exists and it contain *.pem files." >> $LOG
-  echo " * If nothing of the above works, remove /etc/letsencrypt/live/$DOMAIN/ and run the installer again: bash installssl.sh" >> $LOG
+  echo "This certificate does not exist or could not be successfully renewed. You can do the following: " >> $LOG
+  echo " * Check if your domain is still alive. " >> $LOG
+  echo " * Check if the folder /etc/letsencrypt/live/$DOMAIN/ exists and it contain *.pem files. " >> $LOG
+  echo " * If nothing of the above works, remove /etc/letsencrypt/live/$DOMAIN/ and run the installer again: bash installssl.sh " >> $LOG
 fi
 echo " " >> $LOG
 
 if [ "$RENEW" -eq "1" ]; then
 echo 
 echo "Starting renewal script.." >> $LOG
-echo "#######################"
+echo "#########################"
 echo "$TIME" >> $LOG
 echo "Removing port redirect.." >> $LOG
 echo "************************"
@@ -48,14 +48,14 @@ sudo head -n -4 /etc/ufw/before.rules > before.rules
 sudo rm /etc/ufw/before.rules >> $LOG
 sudo cp before.rules /etc/ufw/before.rules >> $LOG
 echo "Done." >> $LOG
-echo "Running certbot-auto renew.." >> $LOG
+echo "Running certbot-auto renew.. " >> $LOG
 sudo ufw allow 443/tcp &> /dev/null
 sudo certbot renew --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting." | tee -a $LOG && exit 1; }
 sudo ufw delete allow 443/tcp &> /dev/null
 sudo ufw reload >> $LOG
 echo "Done." >> $LOG
 echo
-echo -n "Installing port redirect.." >> $LOG
+echo -n "Installing port redirect.. " >> $LOG
 echo "**************************"
 echo "*nat" >> before.rules
 echo ":PREROUTING ACCEPT [0:0]" >> before.rules
@@ -70,9 +70,9 @@ echo
 echo "Reload firewall.." >> $LOG
 sudo ufw reload >> $LOG
 echo "Done." >> $LOG
-   echo "Reload Shift to take the new certificate" >> $LOG
-   bash /home/$SSLUSER/shift/shift_manager.bash reload >> $LOG
-   echo "Done." >> $LOG
+echo "Reload Shift to take the new certificate!" >> $LOG
+bash /home/$SSLUSER/shift/shift_manager.bash reload >> $LOG
+echo "Done. " >> $LOG
 TIME=$(date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S")
 echo "*********************************"
 echo "* Certificate renewal completed *" >> $LOG
