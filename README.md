@@ -10,7 +10,7 @@ In order to complete this script, you will need:
 * To know your network interface
 	* Run `ifconfig` and write it down (normally it is eth0, eth1, eth2, ens1, ens2, ens3...) <br>
 
-## Install trusted SSL certificate issued by Let's Encrypt
+## Install Let's Encrypt certificate
 First of all you'll need to clone this repository:
 ```
 cd ~
@@ -20,7 +20,7 @@ cd free-ssl
 To generate and install the trusted SSL certificate, run: `bash installssl.sh`<br>
 The script will guide you through the installation process.<br><br>
 
-#### Renew letsencrypt certificate
+## Renew Let's Encrypt certificate
 After running `installssl.sh`, it will give a line that you should add to your cronjobs. You can do this by typing `cronjob -e`. After adding it, it will automatically check the expiring date of your certificate and renew it, if needed.<br>
 You can use [Crontab Generator](https://www.crontab-generator.org/) to help you with your cronjob.<br>
 Example: `* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log`<br>
