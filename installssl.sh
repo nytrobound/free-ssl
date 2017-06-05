@@ -8,7 +8,7 @@ LOG=$(pwd)/logs/installssl.log
 CYAN='\033[1;36m'
 OFF='\033[0m'
 mkdir -p logs
-echo "Installation start.." >> $LOG
+echo "Installation start.. " >> $LOG
 echo "####################" >> $LOG
 echo
 
@@ -114,7 +114,7 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other types of 
 		echo "Allowing your https port $HTTPS_PORT/tcp.. " >> $LOG
 		sudo ufw allow $HTTPS_PORT/tcp &>> $LOG || { echo "Could not allow $HTTPS_PORT/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 		echo "ufw reload.. " >> $LOG
-		sudo ufw reload &>> $LOG || { echo "Could not reload ufw. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
+		sudo ufw reload &>> $LOG || { echo "Could not reload ufw. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 	else
 		echo -n "Restoring ufw/before.rules.. " | tee -a $LOG
 		sudo rm /etc/ufw/before.rules >> $LOG
@@ -154,8 +154,8 @@ echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result. " | tee -a $LOG
 echo " "  | tee -a $LOG
 echo
-echo "--> It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob. " | tee -a $LOG
-echo "To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end: " | tee -a $LOG
+echo "It is recommended to use https://www.crontab-generator.org/ to help generating a cronjob. You can then add that with cronjob -e. Example: " | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
+echo "This cronjob checks and renews your SSL certificate every Wednesday at 12pm." | tee -a $LOG
 echo " " | tee -a $LOG
 

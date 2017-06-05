@@ -19,15 +19,15 @@ then
   expdate="date +%D --date='$expiredate'"
   ed=`eval $expdate`
   daysleft=`echo $(($(($(date -u -d "$ed" "+%s") - $(date -u -d "$today" "+%s"))) / 86400))`
-  echo "Today's date: $today" >> $LOG
-  echo "Expiring on : $ed" >> $LOG
-  echo "Days left : $daysleft" >> $LOG
+  echo "Today's date: $today " >> $LOG
+  echo "Expiring on : $ed " >> $LOG
+  echo "Days left : $daysleft " >> $LOG
   echo " " >> $LOG
   if [ "$daysleft" -lt "30" ]; then
         echo "Less than 30 days: Executing renewal script.. " >> $LOG
         RENEW="1"
   else
-        echo "Greater than 30 days, no need for renewal. " >> $LOG
+        echo "Greater than 30 days: No need for renewal. " >> $LOG
   fi
 else
   echo "This certificate does not exist or could not be successfully renewed. You can do the following: " >> $LOG
@@ -39,10 +39,10 @@ echo " " >> $LOG
 
 if [ "$RENEW" -eq "1" ]; then
 echo 
-echo "Starting renewal script.." >> $LOG
+echo "Starting renewal script.. " >> $LOG
 echo "#########################" >> $LOG
 echo "$TIME" >> $LOG
-echo "Removing port redirect.." >> $LOG
+echo "Removing port redirect.. " >> $LOG
 echo "************************"
 sudo head -n -4 /etc/ufw/before.rules > before.rules
 sudo rm /etc/ufw/before.rules >> $LOG
@@ -53,7 +53,7 @@ sudo ufw allow 443/tcp &> /dev/null
 sudo certbot renew --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 sudo ufw delete allow 443/tcp &> /dev/null
 sudo ufw reload >> $LOG
-echo "Done." >> $LOG
+echo "Done. " >> $LOG
 echo
 echo -n "Installing port redirect.. " >> $LOG
 echo "**************************"
@@ -74,8 +74,8 @@ echo "Reload Shift to take the new certificate! " >> $LOG
 bash /home/$SSLUSER/shift/shift_manager.bash reload >> $LOG
 echo "Done. " >> $LOG
 TIME=$(date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S")
-echo "*********************************"
+echo "*********************************" >> $LOG
 echo "* Certificate renewal completed *" >> $LOG
-echo "*********************************"
+echo "*********************************" >> $LOG
 echo "$TIME" >> $LOG
 fi
