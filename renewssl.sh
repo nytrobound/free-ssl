@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ! [ -f "config.sh" ]; then
-        echo "Please run the installer first"
+        echo "Please run the installer first!"
         exit 0
 fi
 
@@ -24,7 +24,7 @@ then
   echo "Days left : $daysleft" >> $LOG
   echo " " >> $LOG
   if [ "$daysleft" -lt "30" ]; then
-        echo "Less than 30 days.. execute renewal script.." >> $LOG
+        echo "Less than 30 days: Executing renewal script.." >> $LOG
         RENEW="1"
   else
         echo "Greater than 30 days, no need for renewal." >> $LOG
@@ -39,7 +39,7 @@ echo " " >> $LOG
 
 if [ "$RENEW" -eq "1" ]; then
 echo 
-echo "Starting renew script.." >> $LOG
+echo "Starting renewal script.." >> $LOG
 echo "#######################"
 echo "$TIME" >> $LOG
 echo "Removing port redirect.." >> $LOG
@@ -50,10 +50,11 @@ sudo cp before.rules /etc/ufw/before.rules >> $LOG
 echo "Done." >> $LOG
 echo "Running certbot-auto renew.." >> $LOG
 sudo ufw allow 443/tcp &> /dev/null
-sudo certbot renew --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting." | tee -a $LOG && exit 1; }
+sudo certbot renew --dry-run --agree-tos >> $LOG || { echo "Could not generate SSL certificate in renewssl.sh. Please read your logs/renewssl.log file. Exiting." | tee -a $LOG && exit 1; }
 sudo ufw delete allow 443/tcp &> /dev/null
 sudo ufw reload >> $LOG
 echo "Done." >> $LOG
+echo
 echo -n "Installing port redirect.." >> $LOG
 echo "**************************"
 echo "*nat" >> before.rules
@@ -64,10 +65,11 @@ sudo chmod 0644 before.rules >> $LOG
 sudo chown root:root before.rules >> $LOG
 sudo rm /etc/ufw/before.rules >> $LOG
 sudo mv before.rules /etc/ufw/before.rules >> $LOG
-echo "done" >> $LOG
+echo "Done." >> $LOG
+echo
 echo "Reload firewall.." >> $LOG
 sudo ufw reload >> $LOG
-echo "done" >> $LOG
+echo "Done." >> $LOG
    echo "Reload Shift to take the new certificate" >> $LOG
    bash /home/$SSLUSER/shift/shift_manager.bash reload >> $LOG
    echo "Done." >> $LOG

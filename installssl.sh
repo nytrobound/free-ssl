@@ -13,7 +13,7 @@ echo "Installation start.." >> $LOG
 echo
 
 if [ -f "config.sh" ]; then
-	echo "Oh No! A previous installation was detected." | tee -a $LOG
+	echo "A previous installation was detected." | tee -a $LOG
 	echo "This script is meant to be executed only once." | tee -a $LOG
 	echo "Exiting..." | tee -a $LOG
 	exit 0
@@ -45,7 +45,7 @@ sudo ufw allow 443/tcp &>> $LOG || { echo "Could not enable port 443. Please rea
 echo "Done."
 echo
 echo -n "Backing up firewall.." | tee -a $LOG
-sudo cp /etc/ufw/before.rules before.rules.backup #Backing up file /etc/ufw/before.rules
+sudo cp /etc/ufw/before.rules before.rules.backup
 echo "Done." | tee -a $LOG
 
 echo
@@ -151,7 +151,7 @@ echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result." | tee -a $LOG
 echo " "  | tee -a $LOG
 echo "Now you'll need to add a cronjob to renew your certificate regularly." | tee -a $LOG
-echo "It is recommended to use http://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
+echo "It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
 echo "Example: To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end:" | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo " " | tee -a $LOG
