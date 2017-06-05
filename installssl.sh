@@ -9,12 +9,13 @@ CYAN='\033[1;36m'
 OFF='\033[0m'
 mkdir -p logs
 echo "Installation start.." >> $LOG
+echo "####################" >> $LOG
 echo
 
 if [ -f "config.sh" ]; then
 	echo "A previous installation was detected. " | tee -a $LOG
 	echo "This script is meant to be executed only once. " | tee -a $LOG
-	echo "Exiting..." | tee -a $LOG
+	echo "Exiting... " | tee -a $LOG
 	exit 0
 fi
 
@@ -33,19 +34,19 @@ echo -e "Execute ${CYAN}ifconfig${OFF} in the other terminal and look for the ne
 echo -n "What is your network interface?: "
         read NETWORK_INTERFACE
 echo
-echo "Your domain name is: $DOMAIN_NAME" >> $LOG
-echo "Your email is: $EMAIL" >> $LOG
-echo "Your https port is: $HTTPS_PORT" >> $LOG
-echo "Your network interface is: $NETWORK_INTERFACE" >> $LOG
+echo "Your domain name is: $DOMAIN_NAME " >> $LOG
+echo "Your email is: $EMAIL " >> $LOG
+echo "Your https port is: $HTTPS_PORT " >> $LOG
+echo "Your network interface is: $NETWORK_INTERFACE " >> $LOG
 
 echo
 echo -n "Enabling port 443/tcp.. " | tee -a $LOG
-sudo ufw allow 443/tcp &>> $LOG || { echo "Could not enable port 443. Please read your logs/installssl.log file. Exiting."  | tee -a $LOG && exit 1; }
-echo "Done."
+sudo ufw allow 443/tcp &>> $LOG || { echo "Could not enable port 443. Please read your logs/installssl.log file. Exiting. "  | tee -a $LOG && exit 1; }
+echo "Done. "
 echo
 echo -n "Backing up firewall.. " | tee -a $LOG
 sudo cp /etc/ufw/before.rules before.rules.backup
-echo "Done." | tee -a $LOG
+echo "Done. " | tee -a $LOG
 
 echo
 echo -n "Installing certbot.. " | tee -a $LOG
@@ -61,8 +62,8 @@ export LC_CTYPE="en_US.UTF-8" >> $LOG
 
 echo
 echo -n "Generating new SSL certificate.. This could take some minutes.. " | tee -a $LOG
-sudo certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
-echo "Done." | tee -a $LOG
+sudo certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
+echo "Done. " | tee -a $LOG
 sudo chmod 755 /etc/letsencrypt/archive/
 sudo chmod 755 /etc/letsencrypt/live/
 
@@ -74,7 +75,7 @@ sudo sh -c "echo \"*nat\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \":PREROUTING ACCEPT [0:0]\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \"-A PREROUTING -i $NETWORK_INTERFACE -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PORT\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \"COMMIT\" >> /etc/ufw/before.rules" >> $LOG
-echo "Done." | tee -a $LOG
+echo "Done. " | tee -a $LOG
 
 cd $LOCAL_HOME
 echo "SSLUSER=\"$SSLUSER\"" > $CONF
@@ -84,33 +85,34 @@ echo "HTTPS_PORT=\"$HTTPS_PORT\"" >> $CONF
 echo "NETWORK_INTERFACE=\"$NETWORK_INTERFACE\"" >> $CONF
 
 echo
-echo "Please do the following in another terminal on the server:"
+echo "Please do the following in another terminal on the server: "
 echo -e "Run: ${CYAN}sudo nano /etc/ufw/before.rules${OFF}"
 echo "Go to the bottom of the file and check your last 4 lines, that should look like this:"
+echo
 echo "    *nat"
 echo "    :PREROUTING ACCEPT [0:0]"
 echo "    -A PREROUTING -i $NETWORK_INTERFACE -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PORT"
 echo "    COMMIT"
 echo
 echo "* If everything is correct, confirm with y and the script will reload your firewall. "
-echo "* If there is something else or wrong, confirm with n and the script will restore a backup. "
-echo "* Be aware that if the /etc/ufw/before.rules file contains other type of lines at the end of the file, your firewall might not work properly. "
+echo "* If there is something wrong, press n and the script will restore a backup. "
+echo "* Be aware that if the /etc/ufw/before.rules file contains other types of lines at the end of the file, your firewall might not work properly. "
 
 	read -p "Do you want to continue (y/n)?: " -n 1 -r
 	if [[  $REPLY =~ ^[Yy]$ ]]
 	   then
 		echo " " | tee -a $LOG
 		echo
-		echo "Installing the renew script.." | tee -a $LOG
+		echo "Installing the renew script.. " | tee -a $LOG
 		echo "#!/bin/sh" >  start_renew.sh
 		echo "cd /home/$SSLUSER/free-ssl/" >> start_renew.sh
 		echo "source config.sh" >> start_renew.sh
 		echo "bash renewssl.sh \$1" >> start_renew.sh
 
 		echo "Deleting allow 443/tcp rule.. " >> $LOG
-		sudo ufw delete allow 443/tcp &>> $LOG || { echo "Could not remove allow 443/tcp rule. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
+		sudo ufw delete allow 443/tcp &>> $LOG || { echo "Could not remove allow 443/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 		echo "Allowing your https port $HTTPS_PORT/tcp.. " >> $LOG
-		sudo ufw allow $HTTPS_PORT/tcp &>> $LOG || { echo "Could not allow $HTTPS_PORT/tcp rule. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
+		sudo ufw allow $HTTPS_PORT/tcp &>> $LOG || { echo "Could not allow $HTTPS_PORT/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 		echo "ufw reload.. " >> $LOG
 		sudo ufw reload &>> $LOG || { echo "Could not reload ufw. Please read your logs/installssl.log file. Exiting." | tee -a $LOG && exit 1; }
 	else
@@ -119,7 +121,7 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other type of l
 		sudo cp before.rules.backup /etc/ufw/before.rules >> $LOG
 		echo "Done. " | tee -a $LOG
 		echo
-		echo "You have decided not to continue. Please add the lines described above for /etc/ufw/before.rules and reload your firewall manually." | tee -a $LOG
+		echo "You have decided not to continue. Please add the lines described above for /etc/ufw/before.rules and reload your firewall manually. " | tee -a $LOG
 		exit 0
 	fi
 
@@ -128,7 +130,7 @@ echo
 echo " Your SSL Certificate has been created successfully, now you need to perform the following manual task: " | tee -a $LOG
 echo "########################################################################################################" | tee -a $LOG
 echo
-echo "Go to your Shift config.json file and edit the ssl section like the following:" | tee -a $LOG
+echo "Go to your Shift config.json file and edit the ssl section like the following: " | tee -a $LOG
 echo "    \"ssl\": {" | tee -a $LOG
 echo -e "        \"enabled\": ${CYAN}true${OFF},"
 echo "        \"enabled\": true," >> $LOG
@@ -143,16 +145,16 @@ echo "            \"cert\": \"/etc/letsencrypt/live/$DOMAIN_NAME/fullchain.pem\"
 echo "        }" | tee -a $LOG
 echo "    }," | tee -a $LOG
 echo
-echo "Please save your config.json file and reload Shift with ./shift_manager.bash reload" 
+echo "Please save your config.json file and reload Shift with ./shift_manager.bash reload " 
 echo
 echo "***************************************"
 echo "* Installation Successfully Completed *" | tee -a $LOG
 echo "***************************************"
 echo
-echo "You can now visit your address https://$DOMAIN_NAME and confirm the result." | tee -a $LOG
+echo "You can now visit your address https://$DOMAIN_NAME and confirm the result. " | tee -a $LOG
 echo " "  | tee -a $LOG
 echo
-echo "--> It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
+echo "--> It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob. " | tee -a $LOG
 echo "To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end: " | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo " " | tee -a $LOG
