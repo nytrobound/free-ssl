@@ -9,7 +9,6 @@ CYAN='\033[1;36m'
 OFF='\033[0m'
 mkdir -p logs
 echo "Installation start.." >> $LOG
-echo "####################"
 echo
 
 if [ -f "config.sh" ]; then
