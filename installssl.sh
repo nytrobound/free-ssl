@@ -50,10 +50,12 @@ echo "Done." | tee -a $LOG
 
 echo
 echo -n "Installing certbot.. " | tee -a $LOG
-sudo apt-get install software-properties-common
-sudo add-apt-repository ppa:certbot/certbot
+{
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:certbot/certbot
 sudo apt-get update
-sudo apt-get install certbot
+sudo apt-get install -y certbot
+} &> /dev/null
 echo "Done." | tee -a $LOG
 export LC_ALL="en_US.UTF-8" >> $LOG
 export LC_CTYPE="en_US.UTF-8" >> $LOG
@@ -73,7 +75,7 @@ sudo sh -c "echo \"*nat\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \":PREROUTING ACCEPT [0:0]\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \"-A PREROUTING -i $NETWORK_INTERFACE -p tcp --dport 443 -j REDIRECT --to-port $HTTPS_PORT\" >> /etc/ufw/before.rules" >> $LOG
 sudo sh -c "echo \"COMMIT\" >> /etc/ufw/before.rules" >> $LOG
-echo "done" | tee -a $LOG
+echo "Done." | tee -a $LOG
 
 cd $LOCAL_HOME
 echo "SSLUSER=\"$SSLUSER\"" > $CONF
@@ -83,7 +85,7 @@ echo "HTTPS_PORT=\"$HTTPS_PORT\"" >> $CONF
 echo "NETWORK_INTERFACE=\"$NETWORK_INTERFACE\"" >> $CONF
 
 echo
-echo "Please do the following"
+echo "Please do the following in another terminal on the server:"
 echo -e "Run: ${CYAN}sudo nano /etc/ufw/before.rules${OFF}"
 echo "Go to the bottom of the file and check your last 4 lines, that should look like this:"
 echo "    *nat"
@@ -99,6 +101,7 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other type of l
 	if [[  $REPLY =~ ^[Yy]$ ]]
 	   then
 		echo " " | tee -a $LOG
+		echo
 		echo "Installing the renew script.." | tee -a $LOG
 		echo "#!/bin/sh" >  start_renew.sh
 		echo "cd /home/$SSLUSER/free-ssl/" >> start_renew.sh
@@ -133,7 +136,7 @@ echo "        \"enabled\": true," >> $LOG
 echo "        \"options\": {" | tee -a $LOG
 echo -e "            \"port\": ${CYAN}$HTTPS_PORT${OFF},"
 echo "            \"port\": $HTTPS_PORT," >> $LOG
-echo "            \"address\"\: \"0.0.0.0\"," | tee -a $LOG
+echo "            \"address\": \"0.0.0.0\"," | tee -a $LOG
 echo -e "            \"key\": \"${CYAN}/etc/letsencrypt/live/$DOMAIN_NAME/privkey.pem${OFF}\","
 echo "            \"key\": \"/etc/letsencrypt/live/$DOMAIN_NAME/privkey.pem\"," >> $LOG
 echo -e "            \"cert\": \"${CYAN}/etc/letsencrypt/live/$DOMAIN_NAME/fullchain.pem${OFF}\""
@@ -144,15 +147,15 @@ echo "    }," | tee -a $LOG
 echo
 echo "Please save your config.json file and reload Shift with ./shift_manager.bash reload" 
 echo
-echo "****************************************************"
-echo "* ${CYAN}Installation Successfully Completed${OFF} *" | tee -a $LOG
-echo "****************************************************"
+echo "***************************************"
+echo "* Installation Successfully Completed *" | tee -a $LOG
+echo "***************************************"
 echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result." | tee -a $LOG
 echo " "  | tee -a $LOG
-echo "Now you'll need to add a cronjob to renew your certificate regularly." | tee -a $LOG
+echo
 echo "It is recommended to use https://www.crontab-generator.org/ to help you with your cronjob." | tee -a $LOG
-echo "Example: To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end:" | tee -a $LOG
+echo " --> To check and renew your SSL certificate every Wednesday at 12pm you need to run sudo crontab -e and add at the end:" | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo " " | tee -a $LOG
 
