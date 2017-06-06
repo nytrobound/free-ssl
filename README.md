@@ -18,15 +18,17 @@ git clone https://github.com/nytrobound/free-ssl.git
 cd free-ssl
 ```
 To generate and install the trusted SSL certificate, run: `bash installssl.sh`<br>
-The script will guide you through the installation process.<br><br>
+The script will guide you through the installation process.<br>
 
 ## Renew Let's Encrypt certificate
-After running `installssl.sh`, it will give a line that you should add to your cronjobs. You can do this by typing `cronjob -e`. After adding it, it will automatically check the expiring date of your certificate and renew it, if needed.<br>
-You can use [Crontab Generator](https://www.crontab-generator.org/) to help you with your cronjob.<br>
-Example: `* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log`<br>
-This cronjob checks and renews your SSL certificate every Wednesday at 12pm.<br><br>
-**Note:** `renewssl.sh` will only renew your certificate, if the expiration date is less than 30 days.<br>
+`renewssl.sh` checks the expiring date of your certificate and renew it, if the expiration date is less than 30 days. However, you will need to add a cronjob with `crontab -e` to automatically execute the script.<br>
 
+Make sure to replace **$SSLUSER** with the username you ran the script on!<br><br>
+
+**Example:*** 12 * * WED bash /home/**$SSLUSER**/free-ssl/start_renew.sh >> /home/**$SSLUSER**/free-ssl/logs/cron.log<br>
+This cronjob checks and renews your SSL certificate every Wednesday at 12pm.<br><br>
+
+You can also use [Crontab Generator](https://crontab-generator.org/) to generate a custom cronjob.<br>
 
 ## Links
 Documentation: https://certbot.eff.org/docs <br>

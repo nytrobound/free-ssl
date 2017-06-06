@@ -154,7 +154,7 @@ echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result. " | tee -a $LOG
 echo " "  | tee -a $LOG
 echo
-echo "It is recommended to use https://www.crontab-generator.org/ to help generating a cronjob. You can then add that with cronjob -e. Example: " | tee -a $LOG
+echo "It is recommended to use https://www.crontab-generator.org/ to help generating a cronjob. You can then add that with crontab -e. Example: " | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo "This cronjob checks and renews your SSL certificate every Wednesday at 12pm." | tee -a $LOG
 echo " " | tee -a $LOG
