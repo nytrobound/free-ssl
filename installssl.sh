@@ -25,7 +25,7 @@ echo -n "Enter your domain name: "
 	read DOMAIN_NAME
 echo -n "Enter your email: "
         read EMAIL
-echo -n "Enter the port you will use for HTTPS: "
+echo -n "Enter the port you will use for HTTPS (default is 9406 for testnet and 9306 for mainnet): "
         read HTTPS_PORT
 echo
 echo -e "Before proceeding, please check your ufw configuration. To do this, execute ${CYAN}sudo ufw status${OFF} in a new terminal on your server. "
@@ -61,8 +61,8 @@ export LC_ALL="en_US.UTF-8" >> $LOG
 export LC_CTYPE="en_US.UTF-8" >> $LOG
 
 echo
-echo -n "Generating new SSL certificate.. This could take some minutes.. " | tee -a $LOG
-sudo certbot certonly --standalone -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate SSL certificate. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
+echo -n "Generating a new SSL certificate.. This could take several minutes.. " | tee -a $LOG
+sudo certbot certonly --standalone --preferred-challenges http -d $DOMAIN_NAME --email $EMAIL --agree-tos --non-interactive &>> $LOG || { echo "Could not generate an SSL certificate. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 echo "Done. " | tee -a $LOG
 sudo chmod 755 /etc/letsencrypt/archive/
 sudo chmod 755 /etc/letsencrypt/live/
@@ -87,7 +87,7 @@ echo "NETWORK_INTERFACE=\"$NETWORK_INTERFACE\"" >> $CONF
 echo
 echo "Please do the following in another terminal on the server: "
 echo -e "Run: ${CYAN}sudo nano /etc/ufw/before.rules${OFF} "
-echo "Go to the bottom of the file and check your last 4 lines, that should look like this: "
+echo "Go to the bottom of the file and check the last 4 lines. They should look like this: "
 echo
 echo "    *nat"
 echo "    :PREROUTING ACCEPT [0:0]"
@@ -127,7 +127,7 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other types of 
 
 echo
 echo
-echo " Your SSL Certificate has been created successfully, now you need to perform the following manual task: " | tee -a $LOG
+echo " Your SSL Certificate has been created successfully, now you need to perform the following tasks manually: " | tee -a $LOG
 echo "########################################################################################################" | tee -a $LOG
 echo
 echo "Go to your Shift config.json file and edit the ssl section like the following: " | tee -a $LOG
@@ -154,7 +154,7 @@ echo
 echo "You can now visit your address https://$DOMAIN_NAME and confirm the result. " | tee -a $LOG
 echo " "  | tee -a $LOG
 echo
-echo "It is recommended to use https://www.crontab-generator.org/ to help generating a cronjob. You can then add that with crontab -e. Example: " | tee -a $LOG
+echo "It is recommended that you use https://www.crontab-generator.org/ to help generating a cronjob. You can then add that with crontab -e. Example: " | tee -a $LOG
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo "This cronjob checks and renews your SSL certificate every Wednesday at 12pm." | tee -a $LOG
 echo " " | tee -a $LOG
