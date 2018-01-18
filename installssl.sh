@@ -40,8 +40,9 @@ echo "Your https port is: $HTTPS_PORT " >> $LOG
 echo "Your network interface is: $NETWORK_INTERFACE " >> $LOG
 
 echo
-echo -n "Enabling port 443/tcp.. " | tee -a $LOG
+echo -n "Enabling ports 80/tcp and 443/tcp.. " | tee -a $LOG
 sudo ufw allow 443/tcp &>> $LOG || { echo "Could not enable port 443. Please read your logs/installssl.log file. Exiting. "  | tee -a $LOG && exit 1; }
+sudo ufw allow 80/tcp &>> $LOG || { echo "Could not enable port 80. Please read your logs/installssl.log file. Exiting. "  | tee -a $LOG && exit 1; }
 echo "Done. "
 echo
 echo -n "Backing up firewall.. " | tee -a $LOG
@@ -109,8 +110,9 @@ echo "* Be aware that if the /etc/ufw/before.rules file contains other types of 
 		echo "source config.sh" >> start_renew.sh
 		echo "bash renewssl.sh \$1" >> start_renew.sh
 
-		echo "Deleting allow 443/tcp rule.. " >> $LOG
+		echo "Deleting allow 443/tcp and 80/tcp rules.. " >> $LOG
 		sudo ufw delete allow 443/tcp &>> $LOG || { echo "Could not remove allow 443/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
+		sudo ufw delete allow 80/tcp &>> $LOG || { echo "Could not remove allow 80/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 		echo "Allowing your https port $HTTPS_PORT/tcp.. " >> $LOG
 		sudo ufw allow $HTTPS_PORT/tcp &>> $LOG || { echo "Could not allow $HTTPS_PORT/tcp rule. Please read your logs/installssl.log file. Exiting. " | tee -a $LOG && exit 1; }
 		echo "ufw reload.. " >> $LOG
