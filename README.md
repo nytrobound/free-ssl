@@ -14,7 +14,7 @@ In order to complete this script, you will need:
 First of all you'll need to clone this repository:
 ```
 cd ~
-git clone https://github.com/nytrobound/free-ssl.git
+git clone https://github.com/terrabellus/free-ssl.git
 cd free-ssl
 ```
 To generate and install the trusted SSL certificate, run: `bash installssl.sh`<br>
