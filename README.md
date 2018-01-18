@@ -43,4 +43,4 @@ ACME working area in github: https://github.com/ietf-wg-acme/acme <br><br>
 Original script: https://github.com/mrgrshift/free-ssl.git <br>
 
 
-This script was forked from one created by nytrobound in order to get around the 'Client with the currently selected authenticator does not support any combination of challenges that will satisfy the CA' error. This error emerged in January, 2018, when Let's Encrypt disabling TLS-SNI-01 challenges for security reasons. However, they later released Certbot 0.21.0, that does allow HTTP-01 challenges, and therefore allows this script to run succesfully.
+This script was forked from one created by [nytrobound](https://github.com/nytrobound/free-ssl) in order to get around the 'Client with the currently selected authenticator does not support any combination of challenges that will satisfy the CA' error. This error emerged in January, 2018, when Let's Encrypt disabling TLS-SNI-01 challenges for security reasons. However, they later released Certbot 0.21.0, that does allow HTTP-01 challenges, and therefore allows this script to run succesfully.
