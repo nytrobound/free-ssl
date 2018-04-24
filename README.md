@@ -3,7 +3,7 @@ This script will help you to generate a trusted SSL certificate issued by [Let's
 
 ## Prerequisites
 In order to complete this script, you will need:
-* Have a working [Shift](docs.shiftnrg.net) instance
+* Have a working [Shift](https://shiftproject.com) instance
 * Your own domain. Your domain will look something like this --> `subdomain.domain.tk`
 * An [A Record](https://my.freenom.com/knowledgebase.php?action=displayarticle&id=4) that points your domain to the public IP address of your server
 * To know your network interface
