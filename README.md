@@ -1,9 +1,9 @@
 # free-ssl
-This script will help you generate a trusted SSL certificate issued by Let's Encrypt for your Shift node using certbot.<br>
+This script will help you generate a trusted SSL certificate issued by [Let's Encrypt](https://letsencrypt.org) for your [Shift](https://shiftproject.com) node using [certbot](https://certbot.eff.org).<br>
 
 ## Prerequisites
 In order to complete this script, you will need:
-* Have a working [Shift](https://shiftproject.com) instance
+* Have a working [Shift](https://shiftnrl.nl/docs) instance
 * Your own domain. Your domain will look something like this --> `subdomain.domain.tk`
 * An [A Record](https://my.freenom.com/knowledgebase.php?action=displayarticle&id=4) that points your domain to the public IP address of your server
 * To know your network interface
