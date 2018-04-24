@@ -33,7 +33,7 @@ else
   echo "This certificate does not exist or could not be successfully renewed. You can do the following: " >> $LOG
   echo " * Check if your domain is still alive. " >> $LOG
   echo " * Check if the folder /etc/letsencrypt/live/$DOMAIN/ exists and it contain *.pem files. " >> $LOG
-  echo " * If nothing of the above works, remove /etc/letsencrypt/live/$DOMAIN/ and run the installer again: bash installssl.sh " >> $LOG
+  echo " * If none of the above works, remove /etc/letsencrypt/live/$DOMAIN/ and run the installer again: bash installssl.sh " >> $LOG
 fi
 echo " " >> $LOG
 
@@ -71,7 +71,7 @@ echo
 echo "Reload firewall.. " >> $LOG
 sudo ufw reload >> $LOG
 echo "Done. " >> $LOG
-echo "Reload Shift to take the new certificate! " >> $LOG
+echo "Reload Shift to activate the new certificate! " >> $LOG
 bash /home/$SSLUSER/shift/shift_manager.bash reload >> $LOG
 echo "Done. " >> $LOG
 TIME=$(date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S")
