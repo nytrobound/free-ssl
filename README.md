@@ -4,8 +4,7 @@ This script will help you to generate a trusted SSL certificate issued by [Let's
 ## Prerequisites
 In order to complete this script, you will need:
 * Have a working [Shift](docs.shiftnrg.net) instance
-* Your own domain. You can get a free one for one year at [dot.tk](dot.tk)
-	* Your domain will look something like this --> `subdomain.domain.tk`
+* Your own domain. Your domain will look something like this --> `subdomain.domain.tk`
 * An [A Record](https://my.freenom.com/knowledgebase.php?action=displayarticle&id=4) that points your domain to the public IP address of your server
 * To know your network interface
 	* Run `ifconfig` and write it down (normally it is eth0, eth1, eth2, ens1, ens2, ens3...) <br>
@@ -21,7 +20,7 @@ To generate and install the trusted SSL certificate, run: `bash installssl.sh`<b
 The script will guide you through the installation process.<br>
 
 ## Renew Let's Encrypt certificate
-`renewssl.sh` checks the expiring date of your certificate and renew it, if the expiration date is less than 30 days. However, you will need to add a cronjob with `crontab -e` to automatically execute the script.<br>
+`renewssl.sh` checks the expiry date of your certificate and renews it if the expiration date is less than 30 days. However, you will need to add a cronjob with `crontab -e` to automatically execute the script.<br>
 
 Make sure to replace **$SSLUSER** with the username you ran the script on!<br><br>
 
@@ -41,6 +40,3 @@ ACME spec: http://ietf-wg-acme.github.io/acme/ <br>
 ACME working area in github: https://github.com/ietf-wg-acme/acme <br><br>
 
 Original script: https://github.com/mrgrshift/free-ssl.git <br>
-
-
-This script was forked from one created by [nytrobound](https://github.com/nytrobound/free-ssl) in order to get around the 'Client with the currently selected authenticator does not support any combination of challenges that will satisfy the CA' error. This error emerged in January, 2018, when Let's Encrypt disabled TLS-SNI-01 challenges for security reasons. However, they later released Certbot 0.21.0, that does allow HTTP-01 challenges, and therefore allows this script to run succesfully.
