@@ -30,7 +30,7 @@ echo -n "Enter the port you will use for HTTPS (default is 9406 for testnet and 
 echo
 echo -e "Before proceeding, please check your ufw configuration. To do this, execute ${CYAN}sudo ufw status${OFF} in a new terminal on your server. "
 echo "You'll need to have your own ports enable, especially your SSH port and your SHIFT client port. "
-echo -e "Execute ${CYAN}ifconfig${OFF} in the other terminal and look for the network interface of your server (normally is eth0, eth1, eth2, ens1, ens2, ens3...) "
+echo -e "Execute ${CYAN}ifconfig${OFF} in the other terminal and look for the network interface of your server (usually, it's eth0, eth1, eth2, ens1, ens2 or ens3...) "
 echo -n "What is your network interface?: "
         read NETWORK_INTERFACE
 echo
@@ -132,7 +132,7 @@ echo
 echo " Your SSL Certificate has been created successfully, now you need to perform the following tasks manually: " | tee -a $LOG
 echo "########################################################################################################" | tee -a $LOG
 echo
-echo "Go to your Shift config.json file and edit the ssl section like the following: " | tee -a $LOG
+echo "Go to your Shift config.json file and edit the ssl section to the following: " | tee -a $LOG
 echo "    \"ssl\": {" | tee -a $LOG
 echo -e "        \"enabled\": ${CYAN}true${OFF},"
 echo "        \"enabled\": true," >> $LOG
@@ -160,4 +160,3 @@ echo "It is recommended that you use https://www.crontab-generator.org/ to help 
 echo "* 12 * * WED bash /home/$SSLUSER/free-ssl/start_renew.sh >> /home/$SSLUSER/free-ssl/logs/cron.log" | tee -a $LOG
 echo "This cronjob checks and renews your SSL certificate every Wednesday at 12pm." | tee -a $LOG
 echo " " | tee -a $LOG
-
