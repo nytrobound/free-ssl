@@ -15,6 +15,7 @@ echo
 if [ -f "config.sh" ]; then
 	echo "A previous installation was detected. " | tee -a $LOG
 	echo "This script is meant to be executed only once. " | tee -a $LOG
+	echo "If you wish to remove and reinstall, enter 'remove /etc/letsencrypt/live/$DOMAIN' and rerun 'bash installssl.sh'. " | tee -a $LOG 
 	echo "Exiting... " | tee -a $LOG
 	exit 0
 fi
