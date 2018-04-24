@@ -1,5 +1,5 @@
 # free-ssl
-This script will help you generate a trusted SSL certificate issued by [Let's Encrypt](letsencrypt.org) for your Shift node using [certbot](https://github.com/certbot/certbot).<br>
+This script will help you generate a trusted SSL certificate issued by Let's Encrypt for your Shift node using certbot.<br>
 
 ## Prerequisites
 In order to complete this script, you will need:
